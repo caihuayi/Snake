@@ -15,7 +15,7 @@ public:
     void draw(QPainter* painter);
     void eat_apple();
     void instruct(Circle::Direct _d);
-
+    void refresh();
 private:
     void create_list();
     void add_head(Circle::Direct _d);

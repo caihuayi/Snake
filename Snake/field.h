@@ -17,6 +17,7 @@ public:
     bool left();
     bool right();
     void draw(QPainter*);
+    void refresh();
 private:
     int offset_x;
     int offset_y;

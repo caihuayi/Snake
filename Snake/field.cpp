@@ -49,6 +49,11 @@ void Field::draw(QPainter* painter)
     rect->draw(painter);
 }
 
+void Field::refresh()
+{
+    snake->refresh();
+}
+
 bool Field::is_in()
 {
     Position pos = snake->get_first_position();

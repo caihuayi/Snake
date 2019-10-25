@@ -32,7 +32,12 @@ void MainWindow::paintEvent(QPaintEvent *pe)
     delete brush;
 }
 
-void MainWindow::keyPressEvent(QKeyEvent*)
+void MainWindow::keyPressEvent(QKeyEvent* key)
 {
-
+    if (key->key() == Qt::Key::Key_Space)
+    {
+        field->right();
+        field->refresh();
+        this->update();
+    }
 }

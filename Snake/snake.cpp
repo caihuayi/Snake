@@ -69,6 +69,15 @@ void Snake::instruct(Circle::Direct _d)
     states = _d;
 }
 
+void Snake::refresh()
+{
+    if (circle_list.empty()) return;
+    for (auto &iter : circle_list)
+    {
+        iter->move();
+    }
+}
+
 void Snake::create_list()
 {
     if (first_pos.getX()-length < 0)
