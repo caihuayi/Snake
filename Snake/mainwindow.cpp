@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    field = new Field(100, 100, 20, 20, 20);
+    field = new Field(100, 100, 20, 20, 20, 5);
 }
 
 MainWindow::~MainWindow()
@@ -34,10 +34,22 @@ void MainWindow::paintEvent(QPaintEvent *pe)
 
 void MainWindow::keyPressEvent(QKeyEvent* key)
 {
-    if (key->key() == Qt::Key::Key_Space)
+    if (key->key() == Qt::Key::Key_Right)
     {
         field->right();
-        field->refresh();
-        this->update();
     }
+    else if (key->key() == Qt::Key::Key_Left)
+    {
+        field->left();
+    }
+    else if (key->key() == Qt::Key::Key_Up)
+    {
+        field->up();
+    }
+    else if(key->key() == Qt::Key::Key_Down)
+    {
+        field->down();
+    }
+    field->refresh();
+    this->update();
 }

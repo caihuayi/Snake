@@ -8,8 +8,8 @@ Snake::Snake(Position _p, int _l, int _d, int _ox, int _oy)
     offset_x = _ox;
     offset_y = _oy;
     circle_diameter = _d;
-    create_list();
     states = Circle::_right;
+    create_list();
 }
 
 Snake::~Snake()
@@ -33,49 +33,39 @@ void Snake::draw(QPainter* painter)
     {
         iter->draw(painter);
     }
-    cout << "draw in snake" << endl;
+    //cout << "draw in snake" << endl;
 }
 
 void Snake::eat_apple()
 {
     ++length;
-    Circle *n = circle_list.first();
-    switch(states)
-    {
-    case Circle::_up:
-        circle_list.push_front(new Circle(n->get_pos().getX(), n->get_pos().getY()-1, circle_diameter, offset_x, offset_y));
-        break;
-    case Circle::_down:
-        circle_list.push_front(new Circle(n->get_pos().getX(), n->get_pos().getY()+1, circle_diameter, offset_x, offset_y));
-        break;
-    case Circle::_right:
-        circle_list.push_front(new Circle(n->get_pos().getX()+1, n->get_pos().getY(), circle_diameter, offset_x, offset_y));
-        break;
-    case Circle::_left:
-        circle_list.push_front(new Circle(n->get_pos().getX()-1, n->get_pos().getY(), circle_diameter, offset_x, offset_y));
-        break;
-    default:
-        throw "Direct is wrong";
-    }
+    //cout << "before add rear" << endl;
+    circle_list.append(add_rear());
+    //cout << "before add rear" << endl;
 }
 
-void Snake::instruct(Circle::Direct _d)
+void Snake::instruct(Circle::Direct _now, Circle::Direct _next)
 {
     if (circle_list.empty()) return;
     for (auto &iter : circle_list)
     {
-        iter->instruct(_d);
+        //cout << "Snake instruct for" << endl;
+        iter->instruct(_next);
     }
-    states = _d;
+    states = _next;
 }
 
 void Snake::refresh()
 {
+    //cout << "before refresh" << endl;
     if (circle_list.empty()) return;
     for (auto &iter : circle_list)
     {
+        //cout << "in snake refresh for" << endl;
         iter->move();
     }
+    first_pos = circle_list.first()->get_pos();
+    //cout << "after refresh" << endl;
 }
 
 void Snake::create_list()
@@ -92,9 +82,45 @@ void Snake::create_list()
     {
         circle_list.append(new Circle(x1--, y1, circle_diameter, offset_x, offset_y));
     }
+    int n = 0;
+    for (auto &iter : circle_list)
+    {
+        //cout << "circle create for" << " " << states << " " << n << endl;;
+        for (int i = 0; i < n; i++)
+        {
+            iter->instruct(states);
+        }
+        n++;
+    }
 }
 
-void Snake::add_head(Circle::Direct _d)
+Circle* Snake::add_rear()
 {
+    Circle *c = circle_list.back();
+    Circle *d;
+    Circle::Direct di = c->get_states();
+    cout << "rear state: " << c->get_states() << endl;
+    switch (di)
+    {
+    case Circle::_up:
+        d = new Circle(c->get_pos().getX(), c->get_pos().getY()-1, circle_diameter, offset_x, offset_y);
+        break;
+    case Circle::_down:
+        d = new Circle(c->get_pos().getX(), c->get_pos().getY()+1, circle_diameter, offset_x, offset_y);
+        break;
+    case Circle::_left:
+        d = new Circle(c->get_pos().getX()+1, c->get_pos().getY(), circle_diameter, offset_x, offset_y);
+        break;
+    case Circle::_right:
+        d = new Circle(c->get_pos().getX()-1, c->get_pos().getY()-1, circle_diameter, offset_x, offset_y);
+        break;
+    }
+    cout << "copy_queue" << endl;
+    d->copy_queue(*c);
+    cout << "instruct" << endl;
+    d->instruct(di);
 
+    return d;
 }
+
+

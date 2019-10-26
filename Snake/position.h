@@ -11,6 +11,7 @@ public:
     int getY() const;
     void setX(const int _x);
     void setY(const int _y);
+    bool operator==(const Position& b);
 private:
     int x;
     int y;

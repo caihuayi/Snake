@@ -12,6 +12,6 @@ Rectangle::Rectangle(int _x, int _y, int _d, int _w, int _h)
 
 void Rectangle::draw(QPainter *painter)
 {
-    cout << "draw in rectangle" << endl;
+    //cout << "draw in rectangle" << endl;
     painter->drawRect(offset_x, offset_y, width*diameter, height*diameter);
 }

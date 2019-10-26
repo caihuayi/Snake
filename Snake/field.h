@@ -6,7 +6,7 @@
 #include "circle.h"
 #include "position.h"
 #include <QPainter>
-
+#include <iostream>
 class Field
 {
 public:
@@ -18,6 +18,8 @@ public:
     bool right();
     void draw(QPainter*);
     void refresh();
+    void create_apple();
+    void eat_apple();
 private:
     int offset_x;
     int offset_y;

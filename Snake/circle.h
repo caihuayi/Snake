@@ -17,6 +17,8 @@ public:
     void draw(QPainter* painter);
     Position& move();
     void instruct(Direct _di);
+    Direct get_states();
+    void copy_queue(Circle &b);
 protected:
     Position pos;
     int diameter;

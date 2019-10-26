@@ -14,11 +14,11 @@ public:
     Position get_first_position();
     void draw(QPainter* painter);
     void eat_apple();
-    void instruct(Circle::Direct _d);
+    void instruct(Circle::Direct _now, Circle::Direct _d);
     void refresh();
 private:
     void create_list();
-    void add_head(Circle::Direct _d);
+    Circle* add_rear();
     QList<Circle*> circle_list;
     int length;
     Position first_pos;

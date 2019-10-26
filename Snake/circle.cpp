@@ -47,13 +47,14 @@ Position Circle::get_pos() const
 
 void Circle::draw(QPainter *painter)
 {
-    cout << "draw in circle" << endl;
-    cout << get_pixX() << " " << get_pixY() << endl;
+    //cout << "draw in circle" << endl;
+    //cout << get_pixX() << " " << get_pixY() << endl;
     painter->drawEllipse(get_pixX(), get_pixY(), diameter, diameter);
 }
 
 Position& Circle::move()
 {
+    //cout << "circle instruction queue length:" << instruction_queue.length() << endl;
     Direct d = instruction_queue.first();
     instruction_queue.pop_front();
     switch(d)
@@ -70,8 +71,14 @@ Position& Circle::move()
     case _down:
         pos.setY(pos.getY()+1);
         break;
-    default:
-        throw "wrong Derect";
+    }
+    if (instruction_queue.empty())
+    {
+        states = d;
+    }
+    else
+    {
+        states = instruction_queue.head();
     }
 
     return pos;
@@ -79,18 +86,35 @@ Position& Circle::move()
 
 void Circle::instruct(Direct _di)
 {
-    states = _di;
     instruction_queue.push_back(_di);
+}
+
+Circle::Direct Circle::get_states()
+{
+    return states;
+}
+
+void Circle::copy_queue(Circle &b)
+{
+    int n = 0;
+    Direct d;
+    for (QQueue<Direct>::iterator iter = b.instruction_queue.begin(); iter != b.instruction_queue.end(); iter++)
+    {
+        cout << n++ << *iter << endl;
+        d = *iter;
+        cout << "before instruction push_back" << endl;
+        instruction_queue.push_back(d);
+    }
 }
 
 inline int Circle::get_pixX()
 {
-    cout << pos.getX() << " " << diameter << " " << offset_x << endl;
+    //cout << pos.getX() << " " << diameter << " " << offset_x << endl;
     return pos.getX()*diameter-diameter/2+offset_x;
 }
 
 inline int Circle::get_pixY()
 {
-    cout << pos.getY() << " " << diameter << " " << offset_y << endl;
+    //cout << pos.getY() << " " << diameter << " " << offset_y << endl;
     return pos.getY()*diameter-diameter/2+offset_y;
 }
